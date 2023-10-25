@@ -30,7 +30,7 @@ export function SideBar() {
   return (
     <Card className="h-screen sticky top-0 w-full max-w-[17rem] p-4 shadow-xl bg-primary-800 rounded-none shadow-blue-gray-900/5">
       <div className="logo w-full flex justify-center h-14 mb-5 relative">
-        <img src={"./logo.ico"} alt="logo" className="w-12 h-12" />
+        <img src={"../../../public/logo.ico"} alt="logo" className="w-12 h-12" />
       </div>
       <List>{nav_list}</List>
     </Card>
