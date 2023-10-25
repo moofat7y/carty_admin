@@ -21,7 +21,7 @@ export const searchFilters = [
 const Search = () => {
   const [filter, setFilter] = useState(0);
   return (
-    <div className="flex justify-center w-[min-content]">
+    <div className="flex items-center justify-center w-[min-content]">
       <Button
         color="purple"
         className="px-3 md:px-6  hover:shadow-none shadow-none rounded-none"

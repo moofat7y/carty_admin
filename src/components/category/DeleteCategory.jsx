@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import Modal from "../ui/modals/Modal";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory } from "../../redux/category/categorySlice";
+import { useForm } from "react-hook-form";
 
 export default function DeleteCategory() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { categories } = useSelector((state) => state.category);
   const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const { id } = useParams();
@@ -15,9 +22,28 @@ export default function DeleteCategory() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onDelete = async () => {
+
+  const categoryList = categories.map((item) => {
+    if (item.id.toString() === id.toString()) {
+      return;
+    }
+    return (
+      <option key={item.id} value={item.id}>
+        {item.name}
+      </option>
+    );
+  });
+
+  const onSubmit = async (data) => {
     setIsLoading(true);
-    dispatch(deleteCategory({ id, navigate }));
+    dispatch(
+      deleteCategory({
+        id,
+        deleted_id: +data.delete,
+        category_id: id,
+        navigate,
+      })
+    );
     setIsLoading(false);
   };
 
@@ -31,35 +57,37 @@ export default function DeleteCategory() {
         <FaRegTrashCan />
       </button>
       <Modal open={openModal} onClose={closeModal} title={"حذف التصنيف"}>
-        <form>
-          <div class="flex items-center mb-4">
+        <form id="delete-cat">
+          <div className="flex items-center mb-4">
             <input
-              checked
               id="all-products"
               type="radio"
-              value=""
-              name="colored-radio"
-              class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300"
+              {...register("delete", {
+                required: true,
+              })}
+              value={"0"}
+              className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300"
             />
             <label
               for="all-products"
-              class="mr-2 -mt-1 cursor-pointer text-lg font-medium text-gray-900"
+              className="mr-2 -mt-1 cursor-pointer text-lg font-medium text-gray-900"
             >
               حذف تلك المنتجات
             </label>
           </div>
-          <div class="flex items-center mb-4">
+          <div className="flex items-center mb-4">
             <input
-              checked
               id="purple-radio"
               type="radio"
-              value=""
-              name="colored-radio"
-              class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300"
+              {...register("delete", {
+                required: true,
+              })}
+              value={"1"}
+              className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300"
             />
             <label
               for="purple-radio"
-              class="mr-2 -mt-1 cursor-pointer text-lg font-medium text-gray-900"
+              className="mr-2 -mt-1 cursor-pointer text-lg font-medium text-gray-900"
             >
               نقلهم إلى تصنيف آخر
             </label>
@@ -67,16 +95,16 @@ export default function DeleteCategory() {
           <div className="select">
             <select
               id="categories"
+              {...register("category_id")}
               className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1 cursor-pointer"
             >
-              <option value="ملابس">ملابس</option>
-              <option value="أجهزة الكترونية">أجهزة الكترونية</option>
+              {categoryList}
             </select>
           </div>
           <div className="act flex gap-5 mt-3">
             <button
               type="button"
-              onClick={() => onDelete()}
+              onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
               className="flex w-[170px] mt-3 mb-2 justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
             >

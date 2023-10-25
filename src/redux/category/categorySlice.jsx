@@ -43,9 +43,13 @@ export const updateCategory = createAsyncThunk(
 
 export const deleteCategory = createAsyncThunk(
   "/category/delete",
-  async ({ id, navigate }, thunkApi) => {
+  async ({ id, deleted_id, category_id, navigate }, thunkApi) => {
     try {
-      const res = await categoryService.deleteCategory(id);
+      const res = await categoryService.deleteCategory(
+        id,
+        deleted_id,
+        category_id
+      );
       navigate("/categories");
       notifySuccess("لقد تم حذف المنتج بنجاح");
       return res.data;
@@ -97,6 +101,8 @@ const categorySlice = createSlice({
         state.status = "error";
       })
       .addCase(deleteCategory.fulfilled, (state, action) => {
+        console.log(action.meta.arg.id);
+
         state.categories = state.categories.filter(
           (item) => item.id !== action.meta.arg.id
         );

@@ -6,7 +6,7 @@ export default function CategoryItem({ category }) {
     <div className="cat-item">
       <div className="bg-primary-100 px-5 py-10 rounded-t-md">
         <div className="text text-center text-xl font-bold text-primary-900">
-          <h3>{category.name}</h3>
+          <h3 className="line-clamp-1">{category.name}</h3>
           <span className="block mt-2 text-gray-500 text-lg">
             {`${category.products_count} `}
             منتج

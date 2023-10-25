@@ -18,11 +18,6 @@ export const getUserInfo = createAsyncThunk(
       } else if (!res.data.store) {
         navigate("/store/create-store");
       }
-
-      // if (res.data.email_verified_at && res.data.store) {
-      //   navigate("/");
-      // }
-
       return res;
     } catch (error) {
       window.localStorage.clear();
