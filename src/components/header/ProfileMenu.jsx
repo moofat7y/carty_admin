@@ -11,6 +11,8 @@ import {
 import { IoPowerSharp } from "react-icons/io5";
 import { BiUser } from "react-icons/bi";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/auth/authSlice";
 
 // profile menu component
 const profileMenuItems = [
@@ -26,7 +28,7 @@ const profileMenuItems = [
 
 export default function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
@@ -57,7 +59,7 @@ export default function ProfileMenu() {
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={() => (isLastItem ? dispatch(logOut()) : closeMenu)}
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"

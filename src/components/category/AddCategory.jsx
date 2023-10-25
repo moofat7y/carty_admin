@@ -37,6 +37,7 @@ export default function AddCategory(close) {
           register={{
             ...register("name", {
               required: "يجب عليك ادخال اسم",
+              maxLength: 12,
             }),
           }}
         />

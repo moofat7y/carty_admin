@@ -11,9 +11,11 @@ const getCategories = async () => {
   return response.data;
 };
 
-const deleteCategory = async (id) => {
-  const response = await api.delete(`/seller/categories/${id}`, {
-    _method: "PUT",
+const deleteCategory = async (id, deleted_cat, category_id) => {
+  const response = await api.post(`/seller/categories/${id}`, {
+    _method: "DELETE",
+    delete: deleted_cat,
+    category_id,
   });
 
   return response.data;
